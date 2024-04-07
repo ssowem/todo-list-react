@@ -1,6 +1,6 @@
+import './App.css';
 import React, { useState } from 'react';
 import { nanoid } from "nanoid";
-import './App.css';
 import ListItem from './components/ListItem';
 import TodoForm from './components/TodoForm';
 import FilterButton from './components/FilterButton';
@@ -32,20 +32,18 @@ function App(props) {
   function deleteTask(id) {
     // tasks에서 각 리스트별 고유 id와 삭제할 id를 비교해서
     // 일치하지 않는 할일을 제외한 모든 할일들을 새로운 배열로 만든다
-    console.log("삭제되었습니다")
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
   }
 
   function editTask(id, newText) {
-    console.log("수정되었습니다")
-    const editedTaskList = tasks.map((task) => {
-      if (id === task.id) {
-        return { ...task, text: newText };
-      }
-      return task;
-    });
-    setTasks(editedTaskList);
+      const editedTaskList = tasks.map((task) => {
+        if (id === task.id) {
+          return { ...task, text: newText };
+        }
+        return task;
+      });
+      setTasks(editedTaskList);
   }
 
 
@@ -64,15 +62,6 @@ function App(props) {
       />
     ));
 
-  const filterList = FILTER_NAMES.map((text) => (
-    <FilterButton
-      key={text}
-      text={text}
-      isPressed={text === filter}
-      setFilter={setFilter}
-    />
-  ))
-
   function addTask(text) {
     // text(문자열)을 객체배열로 setTask로 전달하기위해
     // newTask 객체를 만들어 배열에 추가한다. 
@@ -89,7 +78,7 @@ function App(props) {
       filterLabel = '모든 할 일';
       break;
     case "남은 할 일":
-      filterLabel = '해야 할 일';
+      filterLabel = '남은 할 일';
       break;
     case "완료 된 일":
       filterLabel = '완료된 일';
@@ -99,6 +88,17 @@ function App(props) {
   }
 
   const message = tasksCount !== 0 ? `${filterLabel} ${tasksCount} 개` : "";
+
+  const filterList = FILTER_NAMES.map((text) => (
+    <FilterButton
+      key={text}
+      text={text}
+      isPressed={text === filter}
+      setFilter={setFilter}
+      tasksCount={tasksCount}
+    />
+  ))
+
 
   return (
     <div className="wrapper">

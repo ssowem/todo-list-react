@@ -10,10 +10,15 @@ function ListItem(props) {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
-    props.editTask(props.id, newText);
-    setNewText("");
-    setEditing(false);
+    if(newText.trim() === "") {
+      e.preventDefault();
+      alert("수정할 내용을 입력해주세요")
+    } else {
+      e.preventDefault();
+      props.editTask(props.id, newText);
+      setNewText("");
+      setEditing(false);
+    }
   }
 
   const editingTemplate = (
