@@ -37,6 +37,8 @@ input:focus {
   background-color: #f1f1f1;
 }
 
+
+
 .todo-form {
   display: flex;
   width: 100%;
@@ -103,12 +105,17 @@ input:focus {
   outline: 2px solid #000;
 }
 
+.filter-btn > button.pressed {
+  background-color: #000;
+  color: #fff;
+}
+
 .list-wrap {
   display: flex;
   flex-direction: column;
   gap: 10px;
   height: 340px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* 스크롤바 너비 */
@@ -181,10 +188,6 @@ input:focus {
   font-size: 16px;
 }
 
-.list-btn {
-  /* flex:2; */
-}
-
 .list-btn > button {
   padding: 6px 18px;
   color: #fff;
@@ -224,3 +227,11 @@ input:focus {
   border-radius: 5px;
   padding: 4px 8px;
 }
+
+
+@media screen and (max-width: 320px){
+  .wrapper {
+    border: #c93939;
+  }
+}
+

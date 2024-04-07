@@ -8,9 +8,17 @@ function TodoForm(props) {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
-    props.addTask(text);
-    setText("");
+    if(text.trim() === ""){
+      e.preventDefault();
+      alert("할 일을 입력해주세요")
+    }
+  
+    else {
+      e.preventDefault();
+      props.addTask(text);
+      setText("");
+    }
+
   }
   
   return (

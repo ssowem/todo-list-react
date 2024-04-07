@@ -3,16 +3,16 @@ import React, { useState } from "react";
 function ListItem(props) {
 
   const [isEditing, setEditing] = useState(false);
-  const [newText, setnewText] = useState("");
+  const [newText, setNewText] = useState("");
 
   function handleChange(e) {
-    setnewText(e.target.value);
+    setNewText(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
     props.editTask(props.id, newText);
-    setnewText("");
+    setNewText("");
     setEditing(false);
   }
 
@@ -48,14 +48,24 @@ function ListItem(props) {
       <input
         id={props.id}
         type="checkbox"
-        defaultChecked={false}
-        onChange={() => props.toggleTaskCompleted(props.id)}
+        defaultChecked={props.completed}
+        onChange={() => {
+          props.toggleTaskCompleted(props.id)
+        }}
       />
-      <label className='todo-label' htmlFor={props.id}>
+      <label
+        className='todo-label'
+        htmlFor={props.id}
+        style={{textDecoration: props.completed === true ? "line-through" : "none"}}
+        >
         {props.text}
       </label>
       <div className='list-btn'>
-        <button type="button" onClick={() => setEditing(true)}>수정
+        <button
+          type="button"
+          onClick={() => setEditing(true)}
+          style={{ display: props.filter === '완료 된 일' ? 'none' : 'inline' }}
+        >수정
           <span className="visually-hidden">{props.text}</span>
         </button>
         <button
