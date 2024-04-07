@@ -277,21 +277,23 @@ input:focus {
 }
 
 @media screen and (max-width: 480px){
+  body {
+    padding: 0 20px;
+  }
   .wrapper {
     width: 300px;
+    padding: 18px;
   }
   h2 {
     font-size: 20px;
   }
   .todo-form {
     height: 34px;
+    gap: 5px;
   }
   .todo-form > input {
     flex: 5 1;
     font-size: 12px;
-  }
-  .list-wrap {
-    height: 180px;
   }
   .list-item {
     padding: 10px 10px;
@@ -320,5 +322,11 @@ input:focus {
   }
   .todo-text {
     width: 116px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .wrapper {
+    /* margin:10px; */
   }
 }
