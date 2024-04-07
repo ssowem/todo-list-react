@@ -97,6 +97,7 @@ input:focus {
   flex: 1;
   border-radius: 5px;
   background-color: #fff;
+  color: #000;
 }
 
 .filter-btn > button:hover {
@@ -278,12 +279,10 @@ input:focus {
 }
 
 @media screen and (max-width: 480px){
-  body {
-    margin: 20px;
-  }
   .wrapper {
-    width: 100vw;
+    width: 90vw;
     height: 70vh;
+    margin: 0 auto;
     padding: 20px 24px;
   }
   h2 {
