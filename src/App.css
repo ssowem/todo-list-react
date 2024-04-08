@@ -36,10 +36,9 @@ input:focus {
   border-radius: 10px;
   gap: 10px;
   background-color: #f1f1f1;
-  box-shadow: 8px 8px 1px rgba(167, 167, 167, 0.8)
+  box-shadow: 8px 8px 1px rgba(167, 167, 167, 0.8);
+  overflow: auto;
 }
-
-
 
 .todo-form {
   display: flex;
@@ -61,8 +60,6 @@ input:focus {
 }
 
 .add-btn {
-  /* width: 50px;
-  height: 50px; */
   background-color: black;
   position: relative;
   display: flex;
@@ -89,7 +86,7 @@ input:focus {
 
 .filter-btn {
   display: flex;
-  height: 38px;
+  height: 40px;
   gap: 5px;
 }
 
@@ -190,6 +187,8 @@ input:focus {
 .list-item > label {
   flex: 1;
   font-size: 16px;
+  max-height: 48px;
+  overflow: hidden;
 }
 
 .list-btn > button {
@@ -218,72 +217,32 @@ input:focus {
   white-space: nowrap;
 }
 
+.form-group {
+  flex : 1;
+}
+
 .edit-form {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: 4px;
 }
 
 .todo-text {
-  width: 252px;
+  width: 100%;
   height: 100%;
   background-color: #f1f1f1;
   border-radius: 5px;
   padding: 4px 8px;
 }
 
-@media screen and (max-width: 992px) {
-  .wrapper {
-    width: 400px;
-  }
-  h2 {
-    font-size: 22px;
-  }
-  .todo-form {
-    height: 36px;
-  }
-  .todo-form > input {
-    flex: 8 1;
-  }
-  .filter-btn {
-    height: 36px;
-  }
-  .filter-btn > button {
-    font-size: 12px;
-  }
-  .list-item {
-    padding: 16px 10px;
-  }
-  .list-item > input {
-    width: 22px;
-    height: 22px;
-  }
-  .list-item > input:checked::before {
-    top: calc( 50% - 3px);
-    left: 4px;
-  }
-  .list-item > input:checked::after {
-    top: calc( 50% - 6px);
-    left: 10px;
-  }
-  .list-btn > button {
-    padding: 4px 14px;
-    font-size: 11px;
-  }
-  .todo-count {
-    font-size: 14px;
-  }
-  .todo-text {
-    width: 184px;
-  }
-}
 
 @media screen and (max-width: 480px){
   .wrapper {
     width: 90vw;
     height: 70vh;
     margin: 0 auto;
-    padding: 20px 24px;
+    padding: 20px;
   }
   h2 {
     font-size: 22px;
@@ -297,7 +256,7 @@ input:focus {
     font-size: 14px;
   }
   .filter-btn {
-    height: 44px;
+    height: 60px;
   }
   .filter-btn > button {
     font-size: 14px;
@@ -321,7 +280,7 @@ input:focus {
     left: 9px;
   }
   .list-btn > button {
-    padding: 4px 8px;
+    padding: 6px 10px;
     font-size: 14px;
   }
   .todo-count {
@@ -330,7 +289,10 @@ input:focus {
   .list-item > label {
     font-size: 14px;
   }
-  .todo-text {
-    width: 116px;
+}
+
+@media screen and (max-width: 400px) {
+  .todo-form {
+    height: 56px;
   }
 }
