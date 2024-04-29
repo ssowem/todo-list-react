@@ -10,7 +10,7 @@ function ListItem(props) {
   }
 
   function handleSubmit(e) {
-    if(newText.trim() === "") {
+    if (newText.trim() === "") {
       e.preventDefault();
       alert("수정할 내용을 입력해주세요")
     } else {
@@ -33,7 +33,6 @@ function ListItem(props) {
           type="text"
           value={newText}
           onChange={handleChange}
-
         />
       </div>
       <div className="list-btn">
@@ -61,8 +60,8 @@ function ListItem(props) {
       <label
         className='todo-label'
         htmlFor={props.id}
-        style={{textDecoration: props.completed === true ? "line-through" : "none"}}
-        >
+        style={{ textDecoration: props.completed === true ? "line-through" : "none" }}
+      >
         {props.text}
       </label>
       <div className='list-btn'>
