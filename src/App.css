@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+input {
+  transition: all 0.1s ease-in;
+}
+
 body {
   background-color: #D3DEE9;
   width: 100vw;
@@ -313,23 +317,28 @@ input:focus {
 }
 
 /* 회원가입 CSS */
+
 .join-form {
-  width: 400px;
+  width: 440px;
+  height: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #f1f1f1;
+  box-shadow: 4px 4px 6px 1px rgba(174, 174, 174, 0.5);
+  border: 2px solid #000;
+}
+
+.join-form > h2 {
+  margin-bottom: 18px;
+}
+
+.join-input-inner {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
-.join-form > h2 {
-  margin-bottom: 20px;
-}
-.join-form .join-input-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-
 
 .join-input-inner > input[type="text"],
 .join-input-inner > input[type="password"] {
@@ -349,6 +358,7 @@ input:focus {
   font-weight: 600;
   font-size: 15px;
 }
+
 .label-wrap > span {
   color: #da0000;
   font-size: 12px;
@@ -357,14 +367,16 @@ input:focus {
 .btn-wrap {
   display: flex;
   gap: 4px;
+  margin-top: 20px;
 }
 
 .btn-wrap > button {
-  margin-top: 20px;
   flex: 1;
   padding: 15px 0;
   border-radius: 30px;
   font-weight: 600;
+  font-size: 16px;
+  color: #000;
 }
 
 .btn-wrap > button:first-child{
@@ -375,6 +387,15 @@ input:focus {
 .btn-wrap > button:last-child {
   background-color: #000;
   color: #fff;
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.fade-in.visible {
+  opacity: 1;
 }
 
 @media screen and (max-width: 480px){
@@ -435,9 +456,21 @@ input:focus {
   .todo-form {
     height: 56px;
   }
+  .login-form,.join-form {
+    width: 320px;
+  }
+  .join-form > h2 {
+    margin-bottom: 14px;
+  }
+  .btn-wrap {
+    margin-top: 14px;
+  }
+}
 
+@media screen and (max-width: 320px) {
   .login-form,.join-form {
     width: 300px;
     padding: 10px;
   }
+
 }
