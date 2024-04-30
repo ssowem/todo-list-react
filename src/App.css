@@ -317,6 +317,15 @@ input:focus {
 }
 
 /* 회원가입 CSS */
+.back-btn {
+  background-color: transparent;
+  margin-bottom: 10px;
+}
+
+.back-btn > span {
+  font-size: 42px;
+}
+
 
 .join-form {
   width: 440px;
@@ -359,11 +368,17 @@ input:focus {
   font-size: 15px;
 }
 
-.label-wrap > span {
-  color: #da0000;
+.label-wrap > span{
   font-size: 12px;
 }
 
+.label-wrap > span.red {
+  color: #da0000;
+}
+
+.label-wrap > span.blue {
+  color: #00c324;
+}
 .btn-wrap {
   display: flex;
   gap: 4px;
@@ -376,26 +391,8 @@ input:focus {
   border-radius: 30px;
   font-weight: 600;
   font-size: 16px;
-  color: #000;
-}
-
-.btn-wrap > button:first-child{
-  border: 2px solid #000;
-  background-color: #fff;
-}
-
-.btn-wrap > button:last-child {
-  background-color: #000;
-  color: #fff;
-}
-
-.fade-in {
-  opacity: 0;
-  transition: opacity 0.3s ease-in;
-}
-
-.fade-in.visible {
-  opacity: 1;
+  background-color: #b3b3b3;
+  color:#fff;
 }
 
 @media screen and (max-width: 480px){
