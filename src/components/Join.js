@@ -6,8 +6,10 @@ function Join() {
 
   function idHandleChange(e) {
     const idInputValue = e.target.value;
+    const emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
     setEmailValue(idInputValue);
-    setEmailState(idInputValue.length >= 4);
+    // test()메서드는 정규식객체로 문자열이 정규식에 일치하는지 확인함
+    setEmailState(emailRegExp.test(idInputValue));
   }
 
   const [pwdValue, setPwdValue] = useState("");
@@ -24,6 +26,12 @@ function Join() {
     setCheckPwdState(pwdValue === ckPwInputValue);
   }
 
+  function joinHandleSubmit() {
+    emailState && pwdState && checkPwdState ? alert("회원가입 성공!") : alert("입력 된 정보를 확인해주세요.")
+  }
+
+  const btnBgColor = emailState && pwdState && checkPwdState;
+
   return (
     <>
       <button type="button" className="back-btn">
@@ -39,7 +47,7 @@ function Join() {
             <label htmlFor="username">이메일</label>
             {emailState !== null && (
               emailState ? <span className="blue">올바르게 입력되었습니다.</span> :
-                <span className="red">이메일을 4자 이상 입력해주세요.</span>
+                <span className="red">이메일 형식을 확인해주세요.</span>
             )}
           </div>
           <input
@@ -56,7 +64,7 @@ function Join() {
             <label htmlFor="password">비밀번호</label>
             {pwdState !== null && (
               pwdState ? <span className="blue">올바르게 입력되었습니다.</span> :
-                <span className="blue">비밀번호를 8자 이상 입력해주세요.</span>
+                <span className="red">비밀번호를 8자 이상 입력해주세요.</span>
             )}
 
           </div>
@@ -87,7 +95,11 @@ function Join() {
         </div>
 
         <div className="btn-wrap">
-          <button type="submit">가입하기</button>
+          <button
+            type="submit"
+            onClick={joinHandleSubmit}
+            style={{ backgroundColor: btnBgColor ? '#000' : '#888' }}
+          >가입하기</button>
         </div>
 
       </form>

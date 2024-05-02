@@ -391,7 +391,7 @@ input:focus {
   border-radius: 30px;
   font-weight: 600;
   font-size: 16px;
-  background-color: #b3b3b3;
+  /* background-color: #2d3ebe; */
   color:#fff;
 }
 
