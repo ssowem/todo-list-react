@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import AlertModal from "./AlertModal";
 
 function Join() {
   const [emailValue, setEmailValue] = useState("");
@@ -32,9 +33,28 @@ function Join() {
 
   const btnBgColor = emailState && pwdState && checkPwdState;
 
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+    console.log("Modal open")
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleConfirmModal = () => {
+    console.log("확인 클릭됨");
+    setModalOpen(false);
+  };
+
   return (
     <>
-      <button type="button" className="back-btn">
+      <button type="button"
+        className="back-btn"
+        onClick={handleOpenModal}
+      >
         <span className="material-symbols-rounded">
           keyboard_backspace
         </span>
@@ -103,6 +123,12 @@ function Join() {
         </div>
 
       </form>
+
+      <AlertModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmModal}
+      />
     </>
   )
 }
