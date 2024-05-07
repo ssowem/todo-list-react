@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import AlertModal from "./AlertModal";
+import AlertModal from './AlertModal';
 
 function Join() {
   const [emailValue, setEmailValue] = useState("");
@@ -27,27 +27,38 @@ function Join() {
     setCheckPwdState(pwdValue === ckPwInputValue);
   }
 
-  function joinHandleSubmit() {
-    emailState && pwdState && checkPwdState ? alert("회원가입 성공!") : alert("입력 된 정보를 확인해주세요.")
+
+  const [joinClicked, setJoinClicked] = useState(false);
+
+  function joinHandleSubmit(e) {
+    if(emailState && pwdState && checkPwdState) {
+      setJoinClicked(true);
+      alert("회원가입 성공");
+    } else {
+      e.preventDefault();
+      alert("입력 된 정보를 확인해주세요.")
+    }
   }
 
+
+  function handleGoback() {
+    window.history.back();
+  }
+
+  const [modalCondition,setModalCondition] = useState(false);
+  function handleOpenModal() {
+    setModalCondition(true);
+  };
+
+  function handleCloseModal() {
+    setModalCondition(false);
+  };
+
+  function handleConfirm() {
+    handleGoback();
+  };
+
   const btnBgColor = emailState && pwdState && checkPwdState;
-
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setModalOpen(true);
-    console.log("Modal open")
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-
-  const handleConfirmModal = () => {
-    console.log("확인 클릭됨");
-    setModalOpen(false);
-  };
 
   return (
     <>
@@ -59,6 +70,12 @@ function Join() {
           keyboard_backspace
         </span>
       </button>
+
+      <AlertModal
+        isOpen={modalCondition}
+        onCancel={handleCloseModal}
+        onConfirm={handleConfirm}
+      />
 
       <form className="join-form">
         <h2>회원가입</h2>
@@ -124,11 +141,6 @@ function Join() {
 
       </form>
 
-      <AlertModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onConfirm={handleConfirmModal}
-      />
     </>
   )
 }
