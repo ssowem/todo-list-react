@@ -1,11 +1,12 @@
 import './App.css';
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';import { nanoid } from "nanoid";
-import ListItem from './components/ListItem';
-import TodoForm from './components/TodoForm';
-import FilterButton from './components/FilterButton';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; import { nanoid } from "nanoid";
 import Login from './components/Login';
 import Join from "./components/Join";
+import Content from "./components/Content";
+import axios from 'axios';
+import FilterButton from './components/FilterButton';
+import ListItem from './components/ListItem';
 
 const FILTER_MAP = {
   "모두 보기": () => true,
@@ -14,16 +15,23 @@ const FILTER_MAP = {
 }
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-function App(props) {
 
-  const [tasks, setTasks] = useState(props.tasks || []);
-  const [filter, setFilter] = useState("모두 보기");
+function App(props) {
+  const [tasks, setTasks] = useState([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [filter, setFilter] = useState("모두 보기");
+  const filterList = FILTER_NAMES.map((text) => {
+    return (
+      <FilterButton
+        key={text}
+        text={text}
+        isPressed={text === filter}
+        setFilter={setFilter}
+      />
+    );
+  });
 
-  const handleLogin = (status) => {
-    setIsLoggedIn(status);
-  };
 
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
@@ -34,24 +42,6 @@ function App(props) {
     });
     setTasks(updatedTasks);
 
-  }
-
-  function deleteTask(id) {
-    // tasks에서 각 리스트별 고유 id와 삭제할 id를 비교해서
-    // 일치하지 않는 할일을 제외한 모든 할일들을 새로운 배열로 만든다
-    const remainingTasks = tasks.filter((task) => id !== task.id);
-    setTasks(remainingTasks);
-  }
-
-  function editTask(id, newText) {
-    debugger;
-    const editedTaskList = tasks.map((task) => {
-      if (id === task.id) {
-        return { ...task, text: newText };
-      }
-      return task;
-    });
-    setTasks(editedTaskList);
   }
 
   const taskList = tasks
@@ -75,7 +65,24 @@ function App(props) {
     const newTask = { id: `todo-${nanoid()}`, text, completed: false };
     // 전개구문으로 기존배열을 복사후 끝에 객체를 추가하고 setTasks()에 전달
     setTasks([...tasks, newTask]);
+  }
 
+  function editTask(id, newText) {
+    debugger;
+    const editedTaskList = tasks.map((task) => {
+      if (id === task.id) {
+        return { ...task, text: newText };
+      }
+      return task;
+    });
+    setTasks(editedTaskList);
+  }
+
+  function deleteTask(id) {
+    // tasks에서 각 리스트별 고유 id와 삭제할 id를 비교해서
+    // 일치하지 않는 할일을 제외한 모든 할일들을 새로운 배열로 만든다
+    const remainingTasks = tasks.filter((task) => id !== task.id);
+    setTasks(remainingTasks);
   }
 
   const tasksCount = tasks.filter(FILTER_MAP[filter]).length;
@@ -96,44 +103,29 @@ function App(props) {
 
   const message = tasksCount !== 0 ? `${filterLabel} ${tasksCount} 개` : "";
 
-  const filterList = FILTER_NAMES.map((text) => {
-    return (
-      <FilterButton
-        key={text}
-        text={text}
-        isPressed={text === filter}
-        setFilter={setFilter}
-        tasksCount={tasksCount}
-      />
-    );
-  });
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get("http://172.30.1.33:8080/to-do-list/api/v1/todo?pageNumber=1&pageSize=10&status=ACTIVE")
+  //     console.log("성공",response)
+  //   } catch (error) {
+  //     console.log("실패",error);
+  //   }
+  // }
+
+
+  const handleLogin = (status) => {
+    setIsLoggedIn(status);
+  };
+
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={isLoggedIn ? <Navigate replace to="/" /> : <Login onLogin={handleLogin} />} />
-
-        <Route path="/" element={
-          isLoggedIn ? (
-            <div className="wrapper">
-              <h2>💡오늘의 할 일</h2>
-              <TodoForm addTask={addTask} />
-              <div className='filter-btn'>
-                {filterList}
-              </div>
-              <ul className='list-wrap'>
-                {taskList}
-              </ul>
-              <div className='todo-count'>
-                {message}
-              </div>
-            </div>
-          ) : (
-            <Navigate replace to="/login" />
-          )
-        } />
-
-        <Route path="/join" element={<Join />}></Route>
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/content" element={<Content addTask={addTask} message={message} taskList={taskList} filterList={filterList} />} />
+        <Route path="/join" element={<Join />} />
       </Routes>
     </Router>
   );

@@ -31,8 +31,7 @@ function TodoForm(props) {
         onChange={handleChange}
         />
       <button type="submit" className='add-btn'>
-        {/* <span></span>
-          <span></span> */}
+       
       </button>
     </form>
   )
