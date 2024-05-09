@@ -1,90 +1,118 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AlertModal from './AlertModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Join() {
-
-  const navigate = useNavigate();
-  const [emailValue, setEmailValue] = useState("");
   const [emailState, setEmailState] = useState(null);
+  const [emailValue, setEmailValue] = useState("");
   const [idNoticeText, setIdNoticeText] = useState("");
   const [idFontColor, setIdFontColor] = useState("");
 
-  const idHandleChange = (e) => {
+  const [pwdState, setPwdState] = useState(null);
+  const [pwdValue, setPwdValue] = useState("");
+  const [pwdNoticeText, setPwdNoticeText] = useState("");
+  const [pwdFontColor, setPwdFontColor] = useState("");
+
+  const [checkPwdState, setCheckPwdState] = useState(null);
+  const [ckPwdValue, setCkPwdValue] = useState("");
+  const [ckPwdNoticeText, setCkPwdNoticeText] = useState("");
+  const [ckPwdFontColor, setCkPwdFontColor] = useState("");
+
+  const [modalCondition, setModalCondition] = useState(false);
+
+  const navigate = useNavigate();
+  const btnBgColor = emailState && pwdState && checkPwdState;
+
+  const idHandleChange = async (e) => {
     const idInputValue = e.target.value;
     const emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
     setEmailValue(idInputValue);
-    // 이메일 input값이 빈값일때 noticeText, fontColor 빈값으로 초기화함 
+    // 이메일 input값이 빈값일때 (noticeText, fontColor 빈값으로 초기화함)
     if (!idInputValue) {
       setIdNoticeText("");
       setIdFontColor("");
       return;
     }
+
     //이메일 형식이 잘못되었을 때
     if (!emailRegExp.test(idInputValue)) {
-      console.log("이메일형식 틀렸어요")
       setIdNoticeText("이메일 주소를 확인해주세요");
       setIdFontColor("red");
-    //잘못되지 않았을 때 (=이메일 형식이 올바른 값일때)
+      setEmailState(false);
+      //잘못되지 않았을 때 (=이메일 형식이 올바른 값일때)
     } else {
-      console.log("올바른 이메일 형식")
-      setIdNoticeText("올바른 이메일 주소입니다");
-      setIdFontColor("blue");
+      const url = `http://172.30.1.33:8080/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
+      const options = {
+        headers: {
+          'accept': '*/*'
+        }
+      }
+      try {
+        const response = await axios.get(url, options);
+        // console.log(response)
+        setIdNoticeText("올바른 이메일 주소입니다");
+        setIdFontColor("blue");
+        setEmailState(true);
+      }
+      catch (error) {
+        // alert(error.response.data.message);
+        setIdNoticeText(error.response.data.message);
+        setIdFontColor("red");
+        setEmailState(false);
+      }
     }
-
   }
 
-  const [pwdValue, setPwdValue] = useState("");
-  const [pwdState, setPwdState] = useState(null);
-  const [pwdFontColor, setPwdFontColor] = useState("");
-  const [pwdNoticeText, setPwdNoticeText] = useState("");
+  // 비번확인 일치한 상태에서 다시 비밀번호가 수정되는 경우를 방지
+  // pwdValue가 변경될때 ckPwdHandleChange 함수를 실행해서 업데이트
+  useEffect(() => {
+    ckPwdHandleChange({ target: { value: ckPwdValue } });
+  }, [pwdValue]); // pwdValue가 변경될 때마다 호출
+
   const pwdHandleChange = (e) => {
     const pwdInputValue = e.target.value;
     setPwdValue(pwdInputValue);
     // 비밀번호 input값이 빈값일때 noticeText, fontColor 빈값으로 초기화함
-    if(!pwdInputValue) {
+    if (!pwdInputValue) {
       setPwdNoticeText("");
       setPwdFontColor("");
       return;
     }
-    // 비밀번호가 8자 이하일때
-    if(pwdInputValue.length >= 8) {
+    // 비밀번호가 8자 이상일때
+    if (pwdInputValue.length >= 8) {
       // debugger;
       setPwdNoticeText("올바르게 입력되었습니다.");
       setPwdFontColor("blue")
+      setPwdState(true);
 
-    // 비밀번호가 8자 이상일때
+      // 비밀번호가 8자 이하일때
     } else {
-       setPwdNoticeText("비밀번호를 8자 이상으로 입력해주세요.");
+      setPwdNoticeText("비밀번호를 8자 이상으로 입력해주세요.");
       setPwdFontColor("red")
+      setPwdState(false);
     }
   }
 
-  const [checkPwdState, setCheckPwdState] = useState(null);
-  const [ckPwdValue, setCkPwdValue] = useState("");
-  const [ckPwdFontColor, setCkPwdFontColor] = useState("");
-  const [ckPwdNoticeText, setCkPwdNoticeText] = useState("");
   const ckPwdHandleChange = (e) => {
     const ckPwdInputValue = e.target.value;
     setCkPwdValue(ckPwdInputValue);
-    if(!ckPwdInputValue) {
+    if (!ckPwdInputValue) {
       setCkPwdNoticeText("");
       setCkPwdFontColor("");
       return;
     }
 
-    if(pwdValue === ckPwdInputValue) {
+    if (pwdValue === ckPwdInputValue) {
       setCkPwdNoticeText("비밀번호가 일치합니다.");
       setCkPwdFontColor("blue");
+      setCheckPwdState(true);
     } else {
       setCkPwdNoticeText("비밀번호가 일치하지 않습니다.");
       setCkPwdFontColor("red");
+      setCheckPwdState(false);
     }
   }
-
-  const [joinClicked, setJoinClicked] = useState(false);
-
 
   const joinHandleSubmit = async (e) => {
     e.preventDefault();
@@ -119,8 +147,6 @@ function Join() {
   }
 
   // 모달창 기능
-  const [modalCondition, setModalCondition] = useState(false);
-
   function handleOpenModal() {
     setModalCondition(true);
   };
@@ -132,9 +158,6 @@ function Join() {
   function handleConfirm() {
     handleGoback();
   };
-
-  // 
-  const btnBgColor = emailState && pwdState && checkPwdState;
 
   return (
     <>

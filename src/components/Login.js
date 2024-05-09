@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Route, useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -50,8 +50,12 @@ function Login() {
         alert(error.response.data.message)
       }
     }
-
   }
+  
+  const nonMemberLogin = () => {
+    navigate('/content');
+  }
+ 
 
 
   return (
@@ -69,7 +73,7 @@ function Login() {
       </div>
 
       <button type="button" onClick={login}>계정 로그인</button>
-      <button type="button">비회원 로그인</button>
+      <button type="button" onClick={nonMemberLogin}>비회원 로그인</button>
     </form>
   );
 }
