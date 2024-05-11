@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AlertModal from './AlertModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import BackButton from './BackButton';
 
 function Join() {
   const [emailState, setEmailState] = useState(null);
@@ -19,10 +20,11 @@ function Join() {
   const [ckPwdNoticeText, setCkPwdNoticeText] = useState("");
   const [ckPwdFontColor, setCkPwdFontColor] = useState("");
 
-  const [modalCondition, setModalCondition] = useState(false);
-
   const navigate = useNavigate();
   const btnBgColor = emailState && pwdState && checkPwdState;
+  
+  // 모달창 상태관리
+  const [modalCondition, setModalCondition] = useState(false);
 
   const idHandleChange = async (e) => {
     const idInputValue = e.target.value;
@@ -42,7 +44,7 @@ function Join() {
       setEmailState(false);
       //잘못되지 않았을 때 (=이메일 형식이 올바른 값일때)
     } else {
-      const url = `http://172.30.1.33:8080/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
+      const url = `https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
       const options = {
         headers: {
           'accept': '*/*'
@@ -119,7 +121,7 @@ function Join() {
     if (emailState && pwdState && checkPwdState) {
       try {
         const response = await axios.post(
-          'http://172.30.1.33:8080/to-do-list/api/v1/auth/signup',
+          'https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup',
           {
             userId: emailValue,
             password: pwdValue
@@ -132,7 +134,7 @@ function Join() {
           }
         );
         alert("회원가입 성공, 로그인 페이지로 이동합니다.");
-        navigate('/login');
+        navigate('/Login');
       } catch (error) { // 오류처리- 해당되는 메세지로 alert 띄우기 
         alert(error.response.data.message);
       }
@@ -141,34 +143,28 @@ function Join() {
     }
   }
 
-  // 뒤로가기 클릭했을 때
-  function handleGoback() {
-    window.history.back();
-  }
-
-  // 모달창 기능
+  // BackButton 클릭시 모달창 띄우기
   function handleOpenModal() {
     setModalCondition(true);
   };
 
-  function handleCloseModal() {
+  // 모달창 확인 (로그인 페이지로 이동)
+  const handleConfirm = () => {
+    navigate('/login');
+  }
+
+  // 모달창 취소 
+  const handleCloseModal = () => {
     setModalCondition(false);
   };
 
-  function handleConfirm() {
-    handleGoback();
-  };
+
 
   return (
     <>
-      <button type="button"
-        className="back-btn"
-        onClick={handleOpenModal}
-      >
-        <span className="material-symbols-rounded">
-          keyboard_backspace
-        </span>
-      </button>
+      <BackButton
+        handleOpenModal={handleOpenModal}
+      />
 
       <AlertModal
         isOpen={modalCondition}

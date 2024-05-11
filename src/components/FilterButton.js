@@ -1,6 +1,6 @@
 import React from "react";
 
-function FilterButton (props) {
+function FilterButton(props) {
   const buttonClass = props.isPressed ? "btn toggle-btn pressed" : "btn toggle-btn";
   return (
     <button

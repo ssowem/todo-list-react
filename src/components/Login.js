@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Link, Route, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -11,27 +11,13 @@ function Login() {
 
   // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzE1MDkyMDYxLCJleHAiOjE3MTUwOTU2NjF9.gj164sbyeRWwOxjX7de6a4VuXXiLGr-b6kqOxl1pz4QHYQeQE9dbee5Xyg-AW26sehNwzSsfA29SZVIFFp61OA"
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   //로그인 로직구현
-  //   //onLogin(true)를 호출하여 App 컴포넌트에 로그인 상태를 알림
-  //   onLogin(true);
-  // };
-
-  const [loginInfo, setLoginInfo] = useState({
-    userId: "",
-    password: ""
-  });
-
   const [error, setError] = useState("");
-
   const login = async () => {
     if (!username || !password) {
       alert("로그인 정보를 입력해주세요.")
     } else {
-      console.log("아이디는", username)
-      console.log("비밀번호는", password)
-      const url = 'http://172.30.1.33:8080/to-do-list/api/v1/auth/signin'
+
+      const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/auth/signin'
       const body = { userId: username, password: password }
       const options = {
         headers: {
@@ -42,21 +28,21 @@ function Login() {
 
       try {
         const response = await axios.post(url, body, options);
-        localStorage.setItem('accessToken', response.data.accessToken);
-        console.log("성공", response);
-        navigate("/content")
+        // debugger;
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        // console.log("성공", response);
+        navigate("/Content")
+        // localStorage.setItem("accessToken")
       } catch (error) {
-        console.log("실패", error);
+        // console.log("실패", error);
         alert(error.response.data.message)
       }
     }
   }
-  
-  const nonMemberLogin = () => {
-    navigate('/content');
-  }
- 
 
+  const nonMemberLogin = () => {
+    navigate('/Content');
+  }
 
   return (
     <form className="login-form">

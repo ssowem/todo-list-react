@@ -1,10 +1,9 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; import { nanoid } from "nanoid";
 import Login from './components/Login';
 import Join from "./components/Join";
 import Content from "./components/Content";
-import axios from 'axios';
 import FilterButton from './components/FilterButton';
 import ListItem from './components/ListItem';
 
@@ -13,8 +12,8 @@ const FILTER_MAP = {
   "남은 할 일": (task) => !task.completed,
   "완료 된 일": (task) => task.completed,
 }
-const FILTER_NAMES = Object.keys(FILTER_MAP);
 
+const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
   const [tasks, setTasks] = useState([]);
@@ -103,29 +102,13 @@ function App(props) {
 
   const message = tasksCount !== 0 ? `${filterLabel} ${tasksCount} 개` : "";
 
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get("http://172.30.1.33:8080/to-do-list/api/v1/todo?pageNumber=1&pageSize=10&status=ACTIVE")
-  //     console.log("성공",response)
-  //   } catch (error) {
-  //     console.log("실패",error);
-  //   }
-  // }
-
-
-  const handleLogin = (status) => {
-    setIsLoggedIn(status);
-  };
-
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate replace to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/content" element={<Content addTask={addTask} message={message} taskList={taskList} filterList={filterList} />} />
-        <Route path="/join" element={<Join />} />
+        <Route path="/" element={<Navigate replace to="/Login" />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Content" element={<Content addTask={addTask} message={message} taskList={taskList} filterList={filterList} />} />
+        <Route path="/Join" element={<Join />} />
       </Routes>
     </Router>
   );

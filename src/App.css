@@ -324,8 +324,8 @@ input:focus {
 
 .back-btn > span {
   font-size: 42px;
+  color: #000;
 }
-
 
 .join-form {
   width: 440px;
@@ -403,6 +403,7 @@ input:focus {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 9999;
+  animation: fadeOut 0.25s ease-out forwards;
 }
 
 .modal-wrap {
@@ -417,6 +418,15 @@ input:focus {
   z-index: 1000;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   border-radius: 5px;
+  animation: slideDown 0.25s ease-out forwards;
+}
+
+.modal-bg.open {
+  animation-name: fadeIn;
+}
+
+.modal.open .modal-wrap{
+  animation-name: slideUp;
 }
 
 .modal-content {
@@ -450,6 +460,41 @@ input:focus {
 .modal-btn > button:last-child {
   background-color: #000;
   color: #fff;
+}
+
+
+/* 모달창 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%, -50%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(-50%, -50%);
+  }
 }
 
 
@@ -520,12 +565,28 @@ input:focus {
   .btn-wrap {
     margin-top: 14px;
   }
+  .modal-wrap {
+    width: 300px;
+    padding: 20px;
+  }
+  .modal-content .notice {
+    font-size: 16px;
+  }
 }
 
 @media screen and (max-width: 320px) {
   .login-form,.join-form {
-    width: 300px;
-    padding: 10px;
+    width: 290px;
+    padding: 20px;
   }
 
+  .join-form > h2 {
+    font-size: 18px;
+  }
+  .modal-wrap {
+    width: 280px;
+    padding: 20px;
+  }
+
+  
 }
