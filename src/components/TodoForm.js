@@ -1,24 +1,23 @@
+import axios from "axios";
 import React, { useState } from "react";
 
-function TodoForm(props) {
-  const [text, setText] = useState('');
+function TodoForm({ addTask }) {
+  const [text, setText] = useState("");
+
 
   function handleChange(e) {
     setText(e.target.value);
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     if (text.trim() === "") {
-      e.preventDefault();
       alert("할 일을 입력해주세요")
     }
-
     else {
       e.preventDefault();
-      props.addTask(text);
+      addTask(text);
       setText("");
     }
-
   }
 
   return (

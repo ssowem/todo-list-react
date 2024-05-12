@@ -30,7 +30,7 @@ function Login() {
         const response = await axios.post(url, body, options);
         // debugger;
         localStorage.setItem('accessToken', response.data.data.accessToken);
-        // console.log("성공", response);
+        console.log("성공이에요", response);
         navigate("/Content")
         // localStorage.setItem("accessToken")
       } catch (error) {
@@ -46,7 +46,7 @@ function Login() {
 
   return (
     <form className="login-form">
-      <input type="text" placeholder="아이디" onChange={(e) => setUsername(e.target.value)} />
+      <input type="text" placeholder="이메일 계정" onChange={(e) => setUsername(e.target.value)} />
       <input type="password" placeholder="비밀번호" onChange={(e) => setPassword(e.target.value)} />
       <div className="row-wrap">
         <div className='keep-check'>

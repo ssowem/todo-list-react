@@ -1,25 +1,50 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; import { nanoid } from "nanoid";
 import Login from './components/Login';
 import Join from "./components/Join";
 import Content from "./components/Content";
 import FilterButton from './components/FilterButton';
 import ListItem from './components/ListItem';
+import axios from 'axios';
 
 const FILTER_MAP = {
-  "모두 보기": () => true,
-  "남은 할 일": (task) => !task.completed,
-  "완료 된 일": (task) => task.completed,
+  "ALL": () => true,
+  "ACTIVE": (task) => !task.completed,
+  "COMPLETED": (task) => task.completed,
 }
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-function App(props) {
+function App() {
   const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState("ALL");
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [filter, setFilter] = useState("모두 보기");
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=ACTIVE"
+    const options = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+    try {
+      const response = await axios.get(url, options);
+      console.log('성공', response)
+      const tasksId = response.data.data.todoList.map(task => ({
+        ...task,
+        id: task.todoId
+      }));
+      setTasks(tasksId);
+    } catch (error) {
+      console.log('실패', error)
+    }
+  }
+
   const filterList = FILTER_NAMES.map((text) => {
     return (
       <FilterButton
@@ -31,7 +56,6 @@ function App(props) {
     );
   });
 
-
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {
@@ -40,30 +64,23 @@ function App(props) {
       return task;
     });
     setTasks(updatedTasks);
-
   }
 
-  const taskList = tasks
-    .filter(FILTER_MAP[filter]) // 선택된 필터링조건을 만족하는(true) 할일들만 새롭게 반환 
-    .map((task) => ( //필터링된 할일 목록을 taskList 변수에 저장한다
-      <ListItem
-        id={task.id}
-        text={task.text}
-        completed={task.completed}
-        key={task.id}
-        toggleTaskCompleted={toggleTaskCompleted}
-        deleteTask={deleteTask}
-        editTask={editTask}
-        filter={filter}
-      />
-    ));
-
-  function addTask(text) {
-    // text(문자열)을 객체배열로 setTask로 전달하기위해
-    // newTask 객체를 만들어 배열에 추가한다. 
-    const newTask = { id: `todo-${nanoid()}`, text, completed: false };
-    // 전개구문으로 기존배열을 복사후 끝에 객체를 추가하고 setTasks()에 전달
-    setTasks([...tasks, newTask]);
+  const addTask = async (text) => {
+    const accessToken = localStorage.getItem("accessToken");
+    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=ACTIVE"
+    const body = { content: text, status: "ACTIVE", todoId: "todoId"}
+    const options = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+    try {
+      const response = await axios.post(url, body, options);
+      console.log('성공', response)
+    } catch (error) {
+      console.log('실패', error)
+     }
   }
 
   function editTask(id, newText) {
@@ -107,7 +124,7 @@ function App(props) {
       <Routes>
         <Route path="/" element={<Navigate replace to="/Login" />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/Content" element={<Content addTask={addTask} message={message} taskList={taskList} filterList={filterList} />} />
+        <Route path="/Content" element={<Content tasks={tasks} addTask={addTask} filterList={filterList}/>} />
         <Route path="/Join" element={<Join />} />
       </Routes>
     </Router>

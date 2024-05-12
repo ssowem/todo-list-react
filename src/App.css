@@ -10,7 +10,7 @@ input {
 }
 
 body {
-  background-color: #D3DEE9;
+  background-color: #7ebfff;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -42,11 +42,11 @@ input:focus {
   flex-direction: column;
   width: 500px;
   padding: 30px;
-  border: 2px solid #c2c2c2;
+  border: 2px solid #000;
   border-radius: 10px;
   gap: 10px;
   background-color: #f1f1f1;
-  box-shadow: 8px 8px 1px rgba(167, 167, 167, 0.8);
+  box-shadow: 8px 8px 1px rgba(0, 0, 0, 0.8);
   overflow: auto;
 
 }

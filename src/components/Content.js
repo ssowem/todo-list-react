@@ -1,53 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import TodoForm from './TodoForm'
-import axios from 'axios';
 import BackButton from './BackButton';
 import AlertModal from './AlertModal';
 import { useNavigate } from 'react-router-dom';
+import ListItem from './ListItem';
 
-function Content({ addTask, filterList, taskList, message, handleOpenModal, isOpen, onCancel, onConfirm }) {
-  const [content, setContent] = useState(null);
+
+
+function Content({ tasks, addTask, filterList, message, handleOpenModal}) {
+
   // 모달창 상태관리
   const navigate = useNavigate();
   const [modalCondition, setModalCondition] = useState(false);
+  const [todoList, setTodoList] = useState([]);
 
     // BackButton 클릭시 모달창 띄우기
     function handleOpenModal() {
       setModalCondition(true);
     };
-  
     // 모달창 확인 (로그인 페이지로 이동)
     const handleConfirm = () => {
       navigate('/login');
     }
-  
+
     // 모달창 취소 
     const handleCloseModal = () => {
       setModalCondition(false);
     };
-
-    
-  useEffect(() => {
-    fetchData();
-  }, [])
-
-  const accessToken = localStorage.getItem("accessToken");
-
-  const fetchData = async () => {
-    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=ACTIVE"
-    const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      }
-    }
-    try {
-      const response = await axios.get(url, options)
-      console.log("성공", response)
-      setContent(response.data.content)
-    } catch (error) {
-      console.log("실패", error);
-    }
-  }
   return (
     <>
       <BackButton
@@ -67,7 +46,9 @@ function Content({ addTask, filterList, taskList, message, handleOpenModal, isOp
           {filterList}
         </div>
         <ul className='list-wrap'>
-          {taskList}
+          {tasks.map(task => (
+            <ListItem key={task.id} text={task.content} completed={task.status === "ACTIVE"}/>
+          ))}
         </ul>
         <div className='todo-count'>
           {message}
