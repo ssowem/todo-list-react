@@ -144,7 +144,7 @@ function Join() {
   }
 
   // BackButton 클릭시 모달창 띄우기
-  function handleOpenModal() {
+  const handleOpenModal = () => {
     setModalCondition(true);
   };
 
@@ -199,6 +199,7 @@ function Join() {
             id="password"
             placeholder="비밀번호를 입력해주세요"
             value={pwdValue}
+            autoComplete ="off"
             onChange={pwdHandleChange}
           />
         </div>
@@ -213,6 +214,7 @@ function Join() {
             type="password"
             id="confirmPassword"
             placeholder="비밀번호를 한번 더 입력해주세요"
+            autoComplete ="off"
             onChange={ckPwdHandleChange}
           />
         </div>
