@@ -5,23 +5,26 @@ import AlertModal from './AlertModal';
 import { useNavigate } from 'react-router-dom';
 import ListItem from './ListItem';
 import axios from 'axios';
-import { nanoid } from 'nanoid';
+import FilterButton from './FilterButton';
 
 
+const FILTER_NAMES = ["ALL","ACTIVE","COMPLETED"];
 
-function Content({ filterList, message }) {
+function Content({ message }) {
   // 모달창 상태관리
   const navigate = useNavigate();
   const [modalCondition, setModalCondition] = useState(false);
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("ALL");
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [filter]);
 
   const fetchData = async () => {
+    // console.log("filter",filter)
     const accessToken = localStorage.getItem("accessToken");
-    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=ACTIVE"
+    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status="+filter
     const options = {
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -29,18 +32,17 @@ function Content({ filterList, message }) {
     }
     try {
       const response = await axios.get(url, options);
-      console.log('fetchData 성공', response)
+      // console.log('fetchData 성공', response)
       setTodos(response.data.data.todoList);
-
     } catch (error) {
-      console.log('fetchData 함수실행 실패', error)
+      console.log('fetchData 함수실행 실패 에러', error)
+      if (error.response.status == 401) {
+        alert("시간이 초과되어 로그인 화면으로 이동됩니다.")
+        localStorage.removeItem("accessToken");
+        navigate('/login')
+      }
     }
   }
-  // console.log("fetchData끝 todos", todos)
-  
-  {/* {todos.map(todo => (
-            <ListItem key={todo} text={todo.content} fetchDeleteTodo={fetchDeleteTodo} completed={todo.status === "ACTIVE"} />
-          ))} */}
 
   const fetchAddTodo = async (content) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -62,7 +64,7 @@ function Content({ filterList, message }) {
     }
   }
 
-  
+
   // BackButton 클릭시 모달창 띄우기
   const handleOpenModal = () => {
     setModalCondition(true);
@@ -76,6 +78,20 @@ function Content({ filterList, message }) {
   const handleCloseModal = () => {
     setModalCondition(false);
   };
+
+
+  const filterList = FILTER_NAMES.map((text) => {
+    return (
+      <FilterButton
+        key={text}
+        text={text}
+        isPressed={text === filter}
+        setFilter={setFilter}
+      />
+    );
+  });
+  // console.log('filter',filter)
+
   return (
     <>
       <BackButton
@@ -90,14 +106,16 @@ function Content({ filterList, message }) {
 
       <div className="wrapper">
         <h2>💡오늘의 할 일</h2>
+
+
         <TodoForm fetchAddTodo={fetchAddTodo} />
         <div className='filter-btn'>
           {filterList}
         </div>
         <ul className='list-wrap'>
           {todos.map(todo => (
-            // <ListItem key={todo.todoId} text={todo.content} fetchDeleteTodo={fetchDeleteTodo} completed={todo.status === "ACTIVE"} />
-            <ListItem key={todo.todoId} todoId={todo.todoId} content={todo.content} status={todo.status} fetchData={fetchData}/>
+            // <ListItem key={todo.todoId} text={todo.content} deleteTodo={deleteTodo} completed={todo.status === "ACTIVE"} />
+            <ListItem key={todo.todoId} todoId={todo.todoId} content={todo.content} status={todo.status} fetchData={fetchData} />
           ))}
         </ul>
         <div className='todo-count'>

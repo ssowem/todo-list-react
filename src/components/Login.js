@@ -40,12 +40,12 @@ function Login() {
   }
 
   const nonMemberLogin = () => {
-    navigate('/Content');
+    navigate('/NonMemberContent');
   }
 
   return (
     <form className="login-form">
-      <input type="text" placeholder="이메일 계정" onChange={(e) => setUsername(e.target.value)} />
+      <input type="text" placeholder="아이디" onChange={(e) => setUsername(e.target.value)} />
       <input type="password" placeholder="비밀번호" autoComplete ="off" onChange={(e) => setPassword(e.target.value)} />
       <div className="row-wrap">
         <div className='keep-check'>

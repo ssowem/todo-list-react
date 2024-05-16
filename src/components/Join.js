@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import BackButton from './BackButton';
 
 function Join() {
-  const [emailState, setEmailState] = useState(null);
-  const [emailValue, setEmailValue] = useState("");
+  const [idState, setIdState] = useState(null);
+  const [idValue, setIdValue] = useState("");
   const [idNoticeText, setIdNoticeText] = useState("");
   const [idFontColor, setIdFontColor] = useState("");
 
@@ -21,16 +21,17 @@ function Join() {
   const [ckPwdFontColor, setCkPwdFontColor] = useState("");
 
   const navigate = useNavigate();
-  const btnBgColor = emailState && pwdState && checkPwdState;
+  const btnBgColor = idState && pwdState && checkPwdState;
   
   // 모달창 상태관리
   const [modalCondition, setModalCondition] = useState(false);
 
   const idHandleChange = async (e) => {
     const idInputValue = e.target.value;
-    const emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-    setEmailValue(idInputValue);
-    // 이메일 input값이 빈값일때 (noticeText, fontColor 빈값으로 초기화함)
+    // 아이디 영문자로 시작, 숫자포함 5~14자 이하
+    const regExp = /^[0-9a-zA-Z]{5,14}$/g
+    setIdValue(idInputValue);
+    // 아이디 input값이 빈값일때 (noticeText, fontColor 빈값으로 초기화함)
     if (!idInputValue) {
       setIdNoticeText("");
       setIdFontColor("");
@@ -38,10 +39,10 @@ function Join() {
     }
 
     //이메일 형식이 잘못되었을 때
-    if (!emailRegExp.test(idInputValue)) {
-      setIdNoticeText("이메일 주소를 확인해주세요");
+    if (!regExp.test(idInputValue)) {
+      setIdNoticeText("영문,숫자를 조합하여 5~14자로 입력해주세요");
       setIdFontColor("red");
-      setEmailState(false);
+      setIdState(false);
       //잘못되지 않았을 때 (=이메일 형식이 올바른 값일때)
     } else {
       const url = `https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
@@ -53,15 +54,15 @@ function Join() {
       try {
         const response = await axios.get(url, options);
         // console.log(response)
-        setIdNoticeText("올바른 이메일 주소입니다");
+        setIdNoticeText("아이디가 올바르게 입력되었습니다.");
         setIdFontColor("blue");
-        setEmailState(true);
+        setIdState(true);
       }
       catch (error) {
         // alert(error.response.data.message);
         setIdNoticeText(error.response.data.message);
         setIdFontColor("red");
-        setEmailState(false);
+        setIdState(false);
       }
     }
   }
@@ -118,12 +119,12 @@ function Join() {
 
   const joinHandleSubmit = async (e) => {
     e.preventDefault();
-    if (emailState && pwdState && checkPwdState) {
+    if (idState && pwdState && checkPwdState) {
       try {
         const response = await axios.post(
           'https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup',
           {
-            userId: emailValue,
+            userId: idValue,
             password: pwdValue
           },
           {
@@ -150,15 +151,13 @@ function Join() {
 
   // 모달창 확인 (로그인 페이지로 이동)
   const handleConfirm = () => {
-    navigate('/login');
+    navigate('/Login');
   }
 
   // 모달창 취소 
   const handleCloseModal = () => {
     setModalCondition(false);
   };
-
-
 
   return (
     <>
@@ -176,14 +175,14 @@ function Join() {
         <h2>회원가입</h2>
         <div className="join-input-inner id">
           <div className="label-wrap">
-            <label htmlFor="username">이메일</label>
+            <label htmlFor="username">아이디</label>
             <span className={idFontColor}>{idNoticeText}</span>
           </div>
           <input
             type="text"
             id="username"
-            placeholder="이메일을 입력해주세요"
-            value={emailValue}
+            placeholder="아이디를 입력해주세요"
+            value={idValue}
             onChange={idHandleChange}
           />
         </div>
@@ -199,7 +198,7 @@ function Join() {
             id="password"
             placeholder="비밀번호를 입력해주세요"
             value={pwdValue}
-            autoComplete ="off"
+            autoComplete="off"
             onChange={pwdHandleChange}
           />
         </div>
@@ -214,7 +213,7 @@ function Join() {
             type="password"
             id="confirmPassword"
             placeholder="비밀번호를 한번 더 입력해주세요"
-            autoComplete ="off"
+            autoComplete="off"
             onChange={ckPwdHandleChange}
           />
         </div>

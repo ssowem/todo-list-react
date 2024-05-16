@@ -27,6 +27,7 @@ a {
 button {
   cursor: pointer;
   border: none;
+  color: #000;
 }
 
 input {
