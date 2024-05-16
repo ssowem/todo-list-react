@@ -38,12 +38,12 @@ function Join() {
       return;
     }
 
-    //이메일 형식이 잘못되었을 때
+    //아이디 형식이 잘못되었을 때
     if (!regExp.test(idInputValue)) {
       setIdNoticeText("영문,숫자를 조합하여 5~14자로 입력해주세요");
       setIdFontColor("red");
       setIdState(false);
-      //잘못되지 않았을 때 (=이메일 형식이 올바른 값일때)
+    //아이디 형식이 올바를 때
     } else {
       const url = `https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
       const options = {

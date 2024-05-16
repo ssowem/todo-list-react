@@ -3,22 +3,18 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
 
   const navigate = useNavigate();
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
-  // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzE1MDkyMDYxLCJleHAiOjE3MTUwOTU2NjF9.gj164sbyeRWwOxjX7de6a4VuXXiLGr-b6kqOxl1pz4QHYQeQE9dbee5Xyg-AW26sehNwzSsfA29SZVIFFp61OA"
-
-  const [error, setError] = useState("");
   const login = async () => {
-    if (!username || !password) {
+    if (!userName || !password) {
       alert("로그인 정보를 입력해주세요.")
     } else {
 
       const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/auth/signin'
-      const body = { userId: username, password: password }
+      const body = { userId: userName, password: password }
       const options = {
         headers: {
           'Content-Type': 'application/json',
@@ -36,6 +32,13 @@ function Login() {
         console.log("로그인 실패", error);
         alert(error.response.data.message)
       }
+  
+    }
+  }
+
+  const activeEnter = (e) => {
+    if(e.key === "Enter") {
+      login();
     }
   }
 
@@ -43,13 +46,14 @@ function Login() {
     navigate('/NonMemberContent');
   }
 
+ 
   return (
-    <form className="login-form">
-      <input type="text" placeholder="아이디" onChange={(e) => setUsername(e.target.value)} />
+    <form className="login-form" onKeyDown={activeEnter}>
+      <input type="text" placeholder="아이디" onChange={(e) => setUserName(e.target.value)} onClick={activeEnter} />
       <input type="password" placeholder="비밀번호" autoComplete ="off" onChange={(e) => setPassword(e.target.value)} />
       <div className="row-wrap">
         <div className='keep-check'>
-          <input type="checkbox" id='keep' />
+          <input type="checkbox" id='keep'/>
           <label htmlFor="keep">아이디 기억하기</label>
         </div>
         <div className="join">

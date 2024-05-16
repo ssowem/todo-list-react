@@ -150,7 +150,7 @@ function ListItem(props) {
       <label
         className='todo-label'
         htmlFor={props.todoId}
-        style={{ textDecoration: changeStatusTodo === "COMPLETED" ? "line-through" : "none" }}
+        style={{ textDecoration: props.status === "COMPLETED" ? "line-through" : "none" }}
       >
         {props.content}
       </label>
@@ -171,9 +171,7 @@ function ListItem(props) {
     </>
   );
 
-  // console.log("props종료", props)
   return <li className='list-item'>{isEditing ? editingTemplate : viewTemplate}</li>
-  // {isEditing ? editingTemplate : viewTemplate}
 }
 
 export default ListItem;
