@@ -28,8 +28,8 @@ function Join() {
 
   const idHandleChange = async (e) => {
     const idInputValue = e.target.value;
-    // 아이디 영문자로 시작, 숫자포함 5~14자 이하
-    const regExp = /^[0-9a-zA-Z]{5,14}$/g
+    // 아이디 영문자로 시작, 숫자포함 4~12자 이하
+    const regExp = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,12}$/g
     setIdValue(idInputValue);
     // 아이디 input값이 빈값일때 (noticeText, fontColor 빈값으로 초기화함)
     if (!idInputValue) {
@@ -40,7 +40,7 @@ function Join() {
 
     //아이디 형식이 잘못되었을 때
     if (!regExp.test(idInputValue)) {
-      setIdNoticeText("영문,숫자를 조합하여 5~14자로 입력해주세요");
+      setIdNoticeText("영문,숫자를 조합하여 4~12자로 입력해주세요");
       setIdFontColor("red");
       setIdState(false);
     //아이디 형식이 올바를 때
@@ -55,7 +55,7 @@ function Join() {
         const response = await axios.get(url, options);
         // console.log(response)
         setIdNoticeText("아이디가 올바르게 입력되었습니다.");
-        setIdFontColor("blue");
+        setIdFontColor("green");
         setIdState(true);
       }
       catch (error) {
@@ -86,7 +86,7 @@ function Join() {
     if (pwdInputValue.length >= 8) {
       // debugger;
       setPwdNoticeText("올바르게 입력되었습니다.");
-      setPwdFontColor("blue")
+      setPwdFontColor("green")
       setPwdState(true);
 
       // 비밀번호가 8자 이하일때
@@ -108,7 +108,7 @@ function Join() {
 
     if (pwdValue === ckPwdInputValue) {
       setCkPwdNoticeText("비밀번호가 일치합니다.");
-      setCkPwdFontColor("blue");
+      setCkPwdFontColor("green");
       setCheckPwdState(true);
     } else {
       setCkPwdNoticeText("비밀번호가 일치하지 않습니다.");

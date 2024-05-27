@@ -25,7 +25,7 @@ function Login() {
       try {
         const response = await axios.post(url, body, options);
         // debugger;
-        localStorage.setItem('accessToken', response.data.data.accessToken);
+        sessionStorage.setItem('accessToken', response.data.data.accessToken);
         console.log("로그인 성공", response);
         navigate("/Content")
       } catch (error) {

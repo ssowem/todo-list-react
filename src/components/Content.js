@@ -23,7 +23,7 @@ function Content({ message }) {
 
   const fetchData = async () => {
     // console.log("filter",filter)
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status="+filter
     const options = {
       headers: {
@@ -36,16 +36,16 @@ function Content({ message }) {
       setTodos(response.data.data.todoList);
     } catch (error) {
       console.log('fetchData 함수실행 실패 에러', error)
-      if (error.response.status == 401) {
-        alert("시간이 초과되어 로그인 화면으로 이동됩니다.")
-        localStorage.removeItem("accessToken");
+      if (error.response.status === 401) {
+        alert("토큰이 유효하지 않습니다. 다시 로그인 해주세요.")
+        sessionStorage.removeItem("accessToken");
         navigate('/login')
       }
     }
   }
 
   const fetchAddTodo = async (content) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=ACTIVE"
     const body = { content: content, status: "ACTIVE" }
     const options = {
@@ -71,7 +71,9 @@ function Content({ message }) {
   };
   // 모달창 확인 (로그인 페이지로 이동)
   const handleConfirm = () => {
+    sessionStorage.removeItem("accessToken");
     navigate('/login');
+
   }
 
   // 모달창 취소 

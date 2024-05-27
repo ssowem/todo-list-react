@@ -1,10 +1,9 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Join from "./components/Join";
 import Content from "./components/Content";
-import FilterButton from './components/FilterButton';
 import NonMemberContent from './components/NonMemberContent';
 
 // const FILTER_MAP = {

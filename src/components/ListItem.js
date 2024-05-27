@@ -30,7 +30,7 @@ function ListItem(props) {
   const deleteTodo = async () => {
     // debugger;
     // console.log(props.todoId);
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/todo';
     const options = {
       headers: {
@@ -47,7 +47,7 @@ function ListItem(props) {
   }
 
   const modifyTodo = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/todo';
     const body = { todoId: props.todoId, content: newContent };
     const options = {
@@ -75,7 +75,7 @@ function ListItem(props) {
   // }, [checkStatus]);
 
   const changeStatusTodo = async (changedStatus) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
     const url = `https://api.todo.ssobility.me/to-do-list/api/v1/todo/${props.todoId}`;
     //console.log('현재 상태값',checkStatus)
     const body = { status: changedStatus }
