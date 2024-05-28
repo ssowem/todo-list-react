@@ -4,44 +4,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import Join from "./components/Join";
 import Content from "./components/Content";
-import FilterButton from './components/FilterButton';
 import NonMemberContent from './components/NonMemberContent';
-
-// const FILTER_MAP = {
-//   "ALL": () => true,
-//   "ACTIVE": (todo) => !todo.completed,
-//   "COMPLETED": (todo) => todo.completed,
-// }
-
-// const FILTER_NAMES = Object.keys(FILTER_MAP);
+import InputFocusHandler from './components/InputFocusHandler';
 
 function App() {
-  // const [filter, setFilter] = useState("ALL");
-
-  // const filterList = FILTER_NAMES.map((text) => {
-  //   return (
-  //     <FilterButton
-  //       key={text}
-  //       text={text}
-  //       isPressed={text === filter}
-  //       setFilter={setFilter}
-  //     />
-  //   );
-  // });
-
-  // function toggletodoCompleted(id) {
-  //   const updatedtodos = todos.map((todo) => {
-  //     if (id === todo.id) {
-  //       return { ...todo, completed: !todo.completed };
-  //     }
-  //     return todo;
-  //   });
-  //   setTodos(updatedtodos);
-  // }
-
  
-
-  // const message = todosCount !== 0 ? `${filterLabel} ${todosCount} 개` : "";
+  InputFocusHandler();
 
   return (
     <Router>

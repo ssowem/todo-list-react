@@ -1,11 +1,10 @@
-import axios from "axios";
 import React, { useState } from "react";
 
 function TodoForm({ fetchAddTodo }) {
   const [text, setText] = useState("");
 
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     setText(e.target.value);
   }
 

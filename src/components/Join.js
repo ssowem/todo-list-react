@@ -45,6 +45,7 @@ function Join() {
       setIdState(false);
     //아이디 형식이 올바를 때
     } else {
+      console.log()
       const url = `https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
       const options = {
         headers: {
@@ -55,10 +56,17 @@ function Join() {
         const response = await axios.get(url, options);
         // console.log(response)
         setIdNoticeText("아이디가 올바르게 입력되었습니다.");
-        setIdFontColor("blue");
+        setIdFontColor("green");
         setIdState(true);
       }
       catch (error) {
+        if(error.response.status === 409){
+          setIdNoticeText("중복 된 아이디입니다.");
+          setIdFontColor("red");
+          setIdState(false);
+          return;
+        } 
+          // console.log(error);
         // alert(error.response.data.message);
         setIdNoticeText(error.response.data.message);
         setIdFontColor("red");
@@ -86,7 +94,7 @@ function Join() {
     if (pwdInputValue.length >= 8) {
       // debugger;
       setPwdNoticeText("올바르게 입력되었습니다.");
-      setPwdFontColor("blue")
+      setPwdFontColor("green")
       setPwdState(true);
 
       // 비밀번호가 8자 이하일때
@@ -108,7 +116,7 @@ function Join() {
 
     if (pwdValue === ckPwdInputValue) {
       setCkPwdNoticeText("비밀번호가 일치합니다.");
-      setCkPwdFontColor("blue");
+      setCkPwdFontColor("green");
       setCheckPwdState(true);
     } else {
       setCkPwdNoticeText("비밀번호가 일치하지 않습니다.");
