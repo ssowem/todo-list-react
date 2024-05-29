@@ -46,7 +46,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   width: 500px;
-  height: auto;
+  height: 550px;
   padding: 30px;
   border: 2px solid #000;
   border-radius: 10px;
@@ -133,7 +133,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 300px;
+  height: 290px;
   overflow-y: auto;
 }
 
@@ -470,6 +470,9 @@ input:focus {
   color: #fff;
 }
 
+.todo-count {
+  margin-top: 16px;
+}
 
 /* 모달창 애니메이션 */
 @keyframes fadeIn {
@@ -509,7 +512,7 @@ input:focus {
 @media screen and (max-width: 480px){
   .wrapper {
     width: 90vw;
-    /* height:  */
+    height: 460px;
     margin: 0 auto;
     padding: 20px;
   }

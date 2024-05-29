@@ -15,45 +15,25 @@ function Content() {
   const [modalCondition, setModalCondition] = useState(false);
 
   const [message, setMessage] = useState("")
-  const [count, setCount] = useState("");
+  const [count, setCount] = useState(Number + "개");
 
 
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("ALL");
 
   useEffect(() => {
-    fetchData();
     handleMessage();
+  }, [todos])
+
+  useEffect(() => {
+    fetchData();
+
     // console.log(todos.length)
   }, [filter]);
 
-  const handleMessage = () => {
-   
-    if(todos.length > 0) {
-      fetchData();
-      if(filter === "ALL") {
-        console.log(filter,todos)
-
-        setMessage("모든 할 일");
-        setCount(todos.length);
-      }
-      if(filter === "ACTIVE") {
-        setMessage("남은 할 일");
-        setCount(todos.length);
-      }
-      if(filter === "COMPLETED") {
-        setMessage("완료 된 일");
-        setCount(todos.length);
-      }
-    } else {
-      console.log("0개임")
-    }
-  }
-
-
-
   const fetchData = async () => {
     // console.log("filter",filter)
+
     const accessToken = sessionStorage.getItem("accessToken");
     const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=" + filter
     const options = {
@@ -62,9 +42,11 @@ function Content() {
       }
     }
     try {
+      console.log("패치데이터 try문안임")
       const response = await axios.get(url, options);
       // console.log('fetchData 성공', response)
       setTodos(response.data.data.todoList);
+
     } catch (error) {
       console.log('fetchData 함수실행 실패 에러', error)
       if (error.response.status == 401) {
@@ -75,9 +57,35 @@ function Content() {
     }
   }
 
+  const handleMessage = () => {
+    // debugger;
+    if (todos.length > 0) {
+
+      if (filter === "ALL") {
+        console.log(filter, todos)
+        setMessage("모든 할 일");
+        setCount(todos.length + "개");
+        return;
+      }
+      if (filter === "ACTIVE") {
+        setMessage("남은 할 일");
+        setCount(todos.length + "개");
+        return;
+      }
+      if (filter === "COMPLETED") {
+        setMessage("완료 된 일");
+        setCount(todos.length + "개");
+        return;
+      }
+    } else {
+      setMessage("");
+      setCount("");
+    }
+  }
+
   const fetchAddTodo = async (content) => {
     const accessToken = sessionStorage.getItem("accessToken");
-    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=ACTIVE"
+    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status" + filter
     const body = { content: content, status: "ACTIVE" }
     const options = {
       headers: {
@@ -89,7 +97,7 @@ function Content() {
       //const newtodo = {...response.data.data.todoList, completed : false};
       // setTodos(prevtodos => [...prevtodos, newtodo]);
       fetchData();
-
+      setFilter("ALL")
     } catch (error) {
       console.log('실패', error)
     }
@@ -152,7 +160,7 @@ function Content() {
           ))}
         </ul>
         <div className='todo-count'>
-          {message}{count}개
+          {message} {count}
         </div>
       </div>
     </>
