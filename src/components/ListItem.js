@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import AxiosInstance from "./AxiosInstance";
 
 function ListItem(props) {
   // console.log("props시작", props)
@@ -30,19 +31,15 @@ function ListItem(props) {
     isEditing ? setEditing(false) : setEditing(true);
   }
 
+
   const deleteTodo = async () => {
-    // debugger;
-    // console.log(props.todoId);
-    const accessToken = sessionStorage.getItem("accessToken");
-    const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/todo';
+    // const accessToken = sessionStorage.getItem("accessToken");
+    const url = '/todo';
     const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      },
       data: { todoId: props.todoId }
     }
     try {
-      const response = await axios.delete(url, options);
+      await AxiosInstance.delete(url, options);
       props.fetchData();
     } catch (error) {
       console.log('deleteTodo 함수 실행 실패', error)
@@ -50,16 +47,11 @@ function ListItem(props) {
   }
 
   const modifyTodo = async () => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/todo';
+    // const accessToken = sessionStorage.getItem("accessToken");
+    const url = '/todo';
     const body = { todoId: props.todoId, content: newContent };
-    const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
     try {
-      await axios.put(url, body, options);
+      await AxiosInstance.put(url, body);
       // console.log("modifyTodo try문 안임")
       props.fetchData();
 
@@ -78,19 +70,13 @@ function ListItem(props) {
   // }, [checkStatus]);
 
   const changeStatusTodo = async (changedStatus) => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    const url = `https://api.todo.ssobility.me/to-do-list/api/v1/todo/${props.todoId}`;
+    const url = `/todo/${props.todoId}`;
     //console.log('현재 상태값',checkStatus)
     const body = { status: changedStatus }
     //console.log('status데이터 try 들어가기 전',changedStatus)
     //console.log('변경 될 상태값',changedStatus)
-    const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
     try {
-      await axios.patch(url, body, options);
+      await AxiosInstance.patch(url, body);
       props.fetchData();
       //setCheckStatus(changedStatus);
     } catch (error) {

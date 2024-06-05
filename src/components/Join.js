@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import AlertModal from './AlertModal';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BackButton from './BackButton';
+import AxiosInstance from './AxiosInstance';
 
 function Join() {
   const [idState, setIdState] = useState(null);
@@ -22,7 +22,7 @@ function Join() {
 
   const navigate = useNavigate();
   const btnBgColor = idState && pwdState && checkPwdState;
-  
+
   // 모달창 상태관리
   const [modalCondition, setModalCondition] = useState(false);
 
@@ -43,31 +43,28 @@ function Join() {
       setIdNoticeText("영문,숫자를 조합하여 5~14자로 입력해주세요");
       setIdFontColor("red");
       setIdState(false);
-    //아이디 형식이 올바를 때
+      //아이디 형식이 올바를 때
     } else {
-      console.log()
-      const url = `https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup/check-username?username=${idInputValue}`;
-      const options = {
-        headers: {
-          'accept': '*/*'
-        }
-      }
+      const url = `/auth/signup/check-username?username=${idInputValue}`;
+      // const options = {
+      //   headers: {
+      //     'accept': '*/*'
+      //   }
+      // }
       try {
-        const response = await axios.get(url, options);
+        await AxiosInstance.get(url);
         // console.log(response)
         setIdNoticeText("아이디가 올바르게 입력되었습니다.");
         setIdFontColor("green");
         setIdState(true);
       }
       catch (error) {
-        if(error.response.status === 409){
+        if (error.response.status === 409) {
           setIdNoticeText("중복 된 아이디입니다.");
           setIdFontColor("red");
           setIdState(false);
           return;
-        } 
-          // console.log(error);
-        // alert(error.response.data.message);
+        }
         setIdNoticeText(error.response.data.message);
         setIdFontColor("red");
         setIdState(false);
@@ -128,20 +125,17 @@ function Join() {
   const joinHandleSubmit = async (e) => {
     e.preventDefault();
     if (idState && pwdState && checkPwdState) {
+      const url = '/auth/signup'
+      const body = {
+        userId: idValue,
+        password: pwdValue
+      }
       try {
-        const response = await axios.post(
-          'https://api.todo.ssobility.me/to-do-list/api/v1/auth/signup',
-          {
-            userId: idValue,
-            password: pwdValue
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'accept': '*/*'
-            }
-          }
-        );
+        await AxiosInstance.post(url, body)
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //     'accept': '*/*'
+        // }
         alert("회원가입 성공, 로그인 페이지로 이동합니다.");
         navigate('/Login');
       } catch (error) { // 오류처리- 해당되는 메세지로 alert 띄우기 

@@ -4,8 +4,9 @@ import BackButton from './BackButton';
 import AlertModal from './AlertModal';
 import { useNavigate } from 'react-router-dom';
 import ListItem from './ListItem';
-import axios from 'axios';
+// import axios from 'axios';
 import FilterButton from './FilterButton';
+import AxiosInstance from './AxiosInstance';
 
 
 const FILTER_NAMES = ["ALL", "ACTIVE", "COMPLETED"];
@@ -33,27 +34,16 @@ function Content() {
 
   const fetchData = async () => {
     // console.log("filter",filter)
-
-    const accessToken = sessionStorage.getItem("accessToken");
-    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status=" + filter
-    const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
+    const url = `/todo?pageNumber=0&pageSize=10&status=${filter}`
     try {
       console.log("패치데이터 try문안임")
-      const response = await axios.get(url, options);
+      // const response = await axios.get(url, options);
       // console.log('fetchData 성공', response)
+      const response = await AxiosInstance.get(url);
       setTodos(response.data.data.todoList);
 
     } catch (error) {
       console.log('fetchData 함수실행 실패 에러', error)
-      if (error.response.status == 401) {
-        alert("시간이 초과되어 로그인 화면으로 이동됩니다.")
-        sessionStorage.removeItem("accessToken");
-        navigate('/login')
-      }
     }
   }
 
@@ -84,16 +74,16 @@ function Content() {
   }
 
   const fetchAddTodo = async (content) => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    const url = "https://api.todo.ssobility.me/to-do-list/api/v1/todo?pageNumber=0&pageSize=10&status" + filter
+    // const accessToken = sessionStorage.getItem("accessToken");
+    const url = `/todo`;
     const body = { content: content, status: "ACTIVE" }
-    const options = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
+    // const options = {
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`
+    //   }
+    // }
     try {
-      const response = await axios.post(url, body, options);
+      await AxiosInstance.post(url, body);
       //const newtodo = {...response.data.data.todoList, completed : false};
       // setTodos(prevtodos => [...prevtodos, newtodo]);
       fetchData();
