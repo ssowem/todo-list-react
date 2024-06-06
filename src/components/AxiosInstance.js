@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+//url 노출방지를 위해 env 환경변수로 저장
 const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 const AxiosInstance = axios.create({
