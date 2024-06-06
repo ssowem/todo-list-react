@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import AxiosInstance from './AxiosInstance';
 
 function Login() {
 
@@ -13,30 +13,23 @@ function Login() {
       alert("로그인 정보를 입력해주세요.")
     } else {
 
-      const url = 'https://api.todo.ssobility.me/to-do-list/api/v1/auth/signin'
+      const url = '/auth/signin'
       const body = { userId: userName, password: password }
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': '*/*'
-        }
-      }
+      // const options = {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'accept': '*/*'
+      //   }
+      // }
 
       try {
-        const response = await axios.post(url, body, options);
+        const response = await AxiosInstance.post(url, body);
         // debugger;
         sessionStorage.setItem('accessToken', response.data.data.accessToken);
         console.log("로그인 성공", response);
         navigate("/Content")
       } catch (error) {
-        // console.log("로그인 실패", error);
-        // console.log(error.response.status);
-        if (error.response.status === 401) {
-          alert("로그인 정보를 다시 확인해주세요.")
-        } else {
-          alert(error.response.data.message);
-        }
-
+        console.log("로그인 실패");
       }
 
     }

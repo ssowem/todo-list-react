@@ -44,6 +44,8 @@ function Content() {
 
     } catch (error) {
       console.log('fetchData 함수실행 실패 에러', error)
+      sessionStorage.removeItem("accessToken");
+      navigate('/login')
     }
   }
 
@@ -54,17 +56,17 @@ function Content() {
       if (filter === "ALL") {
         console.log(filter, todos)
         setMessage("모든 할 일");
-        setCount(todos.length + "개");
+        setCount(`${todos.length} 개`);
         return;
       }
       if (filter === "ACTIVE") {
         setMessage("남은 할 일");
-        setCount(todos.length + "개");
+        setCount(`${todos.length} 개`);
         return;
       }
       if (filter === "COMPLETED") {
         setMessage("완료 된 일");
-        setCount(todos.length + "개");
+        setCount(`${todos.length} 개`);
         return;
       }
     } else {
@@ -100,6 +102,8 @@ function Content() {
   };
   // 모달창 확인 (로그인 페이지로 이동)
   const handleConfirm = () => {
+    sessionStorage.removeItem("accessToken");
+    console.log('세션스토리지',sessionStorage)
     navigate('/login');
   }
 

@@ -33,7 +33,6 @@ function ListItem(props) {
 
 
   const deleteTodo = async () => {
-    // const accessToken = sessionStorage.getItem("accessToken");
     const url = '/todo';
     const options = {
       data: { todoId: props.todoId }
@@ -47,7 +46,6 @@ function ListItem(props) {
   }
 
   const modifyTodo = async () => {
-    // const accessToken = sessionStorage.getItem("accessToken");
     const url = '/todo';
     const body = { todoId: props.todoId, content: newContent };
     try {
