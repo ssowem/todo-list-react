@@ -46,11 +46,6 @@ function Join() {
       //아이디 형식이 올바를 때
     } else {
       const url = `/auth/signup/check-username?username=${idInputValue}`;
-      // const options = {
-      //   headers: {
-      //     'accept': '*/*'
-      //   }
-      // }
       try {
         await AxiosInstance.get(url);
         // console.log(response)
@@ -68,6 +63,7 @@ function Join() {
         setIdNoticeText(error.response.data.message);
         setIdFontColor("red");
         setIdState(false);
+
       }
     }
   }
@@ -138,7 +134,8 @@ function Join() {
         // }
         alert("회원가입 성공, 로그인 페이지로 이동합니다.");
         navigate('/Login');
-      } catch (error) { // 오류처리- 해당되는 메세지로 alert 띄우기 
+      } catch (error) { 
+        // 오류처리- 해당되는 메세지로 alert 띄우기 
         alert(error.response.data.message);
       }
     } else {
@@ -158,7 +155,8 @@ function Join() {
 
   // 모달창 취소 
   const handleCloseModal = () => {
-    setModalCondition(false);
+  
+    setModalCondition(false)
   };
 
   return (
@@ -225,7 +223,8 @@ function Join() {
             type="submit"
             onClick={joinHandleSubmit}
             style={{ backgroundColor: btnBgColor ? '#000' : '#888' }}
-          >가입하기</button>
+          >가입하기
+          </button>
         </div>
 
       </form>

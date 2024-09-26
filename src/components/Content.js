@@ -4,15 +4,16 @@ import BackButton from './BackButton';
 import AlertModal from './AlertModal';
 import { useNavigate } from 'react-router-dom';
 import ListItem from './ListItem';
-// import axios from 'axios';
 import FilterButton from './FilterButton';
 import AxiosInstance from './AxiosInstance';
+
 
 
 const FILTER_NAMES = ["ALL", "ACTIVE", "COMPLETED"];
 
 function Content() {
   const navigate = useNavigate();
+
   const [modalCondition, setModalCondition] = useState(false);
 
   const [message, setMessage] = useState("")
@@ -33,10 +34,12 @@ function Content() {
   }, [filter]);
 
   const fetchData = async () => {
-    // console.log("filter",filter)
+
     const url = `/todo?pageNumber=0&pageSize=10&status=${filter}`
+
+
     try {
-      console.log("패치데이터 try문안임")
+      // console.log("패치데이터 try문안임")
       // const response = await axios.get(url, options);
       // console.log('fetchData 성공', response)
       const response = await AxiosInstance.get(url);
@@ -54,7 +57,6 @@ function Content() {
     if (todos.length > 0) {
 
       if (filter === "ALL") {
-        console.log(filter, todos)
         setMessage("모든 할 일");
         setCount(`${todos.length} 개`);
         return;
@@ -103,7 +105,6 @@ function Content() {
   // 모달창 확인 (로그인 페이지로 이동)
   const handleConfirm = () => {
     sessionStorage.removeItem("accessToken");
-    console.log('세션스토리지',sessionStorage)
     navigate('/login');
   }
 
@@ -114,6 +115,8 @@ function Content() {
 
   return (
     <>
+
+
       <BackButton
         handleOpenModal={handleOpenModal}
       />

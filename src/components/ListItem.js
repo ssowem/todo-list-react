@@ -1,29 +1,24 @@
-import axios from "axios";
 import React, { useState } from "react";
 import AxiosInstance from "./AxiosInstance";
 
 function ListItem(props) {
-  // console.log("props시작", props)
 
   const [isEditing, setEditing] = useState(false);
-  // 수정 input칸에서 변경 전 content를 초기값을 입력되게함 
+  // 수정 input칸에서 변경 전 content를 초기값을 입력되게 함 
   const [newContent, setNewContent] = useState(props.content);
 
-  // console.log('checkStatus',props.status)
 
   const modifyHandleChange = (e) => {
     setNewContent(e.target.value);
   }
 
   const modifyHandleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //기본 동작 제어하기 ( 폼제출)
+    
     if (newContent.trim() === "") {
       alert("수정할 내용을 입력해주세요")
     } else {
-      // props.edittodo(props.id, newContent);
       modifyTodo();
-      // setNewContent("");
-      // setEditing(false);
     }
   }
 
@@ -38,10 +33,10 @@ function ListItem(props) {
       data: { todoId: props.todoId }
     }
     try {
-      await AxiosInstance.delete(url, options);
+      await AxiosInstance.delete(url, options);;
       props.fetchData();
     } catch (error) {
-      console.log('deleteTodo 함수 실행 실패', error)
+      console.log('deleteTodo 함수 실행 실패', error); 
     }
   }
 
@@ -50,22 +45,14 @@ function ListItem(props) {
     const body = { todoId: props.todoId, content: newContent };
     try {
       await AxiosInstance.put(url, body);
-      // console.log("modifyTodo try문 안임")
       props.fetchData();
 
     } catch (error) {
       console.log(error)
     }
-    // console.log("여기까지왔구나")
     // data가 서버에 전달이 안되었을때를 대비해서 try/catch문 실행후 setEditing false로 변경
     setEditing(false);
-    // console.log(isEditing)
   }
-
-  // useEffect(() => {
-  //   props.fetchData();
-  //   console.log("useEffect들어옴")
-  // }, [checkStatus]);
 
   const changeStatusTodo = async (changedStatus) => {
     const url = `/todo/${props.todoId}`;
@@ -84,11 +71,10 @@ function ListItem(props) {
   }
 
   const handleChangeStatus = () => {
-    if (props.status == "ACTIVE") {
+    if (props.status === "ACTIVE") {
       changeStatusTodo("COMPLETED")
     }
     else {
-      //setCheckStatus("ACTIVE");
       changeStatusTodo("ACTIVE")
     }
   }
@@ -122,7 +108,6 @@ function ListItem(props) {
       <input
         id={props.todoId}
         type="checkbox"
-        // defaultChecked={checkStatus}
         checked={props.status === "COMPLETED" ? true : false}
         onChange={handleChangeStatus}
       />
@@ -133,11 +118,12 @@ function ListItem(props) {
       >
         {props.content}
       </label>
-      <div className='list-btn'>
+      <div className="list-btn">
+
         <button
           type="button"
           onClick={handleSetEditing}
-          style={{ display: props.filter === '완료 된 일' ? 'none' : 'inline' }}
+          style={{ display: props.filter === '완료 된 일' ?'none' : 'inline' }}
         >수정
           <span className="visually-hidden">{props.content}</span>
         </button>
