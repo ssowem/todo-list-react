@@ -8,7 +8,7 @@ function Loading() {
       <SyncLoader 
       size="10"
       />
-      <p>로딩화면 테스트</p>
+      <p>Loading...</p>
     </div>
   )
 }

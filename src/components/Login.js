@@ -7,7 +7,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const [isloading, setLoading] = useState(null);
+  // const [isloading, setLoading] = useState(null);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [keepIdStatus, setKeepIdStatus] = useState(false);
@@ -31,7 +31,7 @@ function Login() {
 
       try {
         // api 호출 전에 true 변경해서 로딩화면 띄우기
-        setLoading(true);
+        // setLoading(true);
         const response = await AxiosInstance.post(url, body);
         sessionStorage.setItem('accessToken', response.data.data.accessToken);
 
@@ -41,7 +41,7 @@ function Login() {
           localStorage.setItem('userName', userName);
         }
 
-        setLoading(false);
+        // setLoading(false);
          // api 호출 완료 후 false 변경해서 로딩화면 숨김
       } catch (error) {
         console.log("로그인 실패");
@@ -70,9 +70,9 @@ function Login() {
 
   return (
     <>
-    <div>
+    {/* <div>
     {isloading ? <Loading/> : null}
-    </div>
+    </div> */}
     
       <form className="login-form" onKeyDown={activeEnter}>
         <input type="text" placeholder="아이디" value={userName} onChange={(e) => setUserName(e.target.value)} onClick={activeEnter} />
